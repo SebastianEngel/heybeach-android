@@ -13,6 +13,8 @@ android {
 
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+    buildConfigField 'String', 'API_BASE_URL', "\"http://139.59.158.8:3000\""
+
     // Use the new Jack and Jill toolchain
     jackOptions {
       enabled true
