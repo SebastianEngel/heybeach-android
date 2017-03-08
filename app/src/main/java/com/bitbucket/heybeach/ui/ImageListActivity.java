@@ -1,9 +1,10 @@
-package com.bitbucket.heybeach;
+package com.bitbucket.heybeach.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.bitbucket.heybeach.R;
 
-public class MainActivity extends AppCompatActivity {
+public class ImageListActivity extends AppCompatActivity {
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
