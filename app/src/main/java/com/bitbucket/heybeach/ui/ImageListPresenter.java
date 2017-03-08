@@ -15,8 +15,8 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
 
   private final ListImagesUseCase listImagesUseCase;
   private final HandlerThread backgroundHandlerThread;
+  private final Handler mainHandler;
   private Handler backgroundHandler;
-  private Handler mainHandler;
 
   ImageListPresenter(ListImagesUseCase listImagesUseCase) {
     this.listImagesUseCase = listImagesUseCase;
@@ -29,12 +29,13 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
     super.onAttach(view);
     backgroundHandlerThread.start();
     backgroundHandler = new Handler(backgroundHandlerThread.getLooper());
+
     loadImages();
   }
 
   @Override
   public void onDetach() {
-    backgroundHandlerThread.quit();
+    backgroundHandlerThread.quitSafely();
     super.onDetach();
   }
 
