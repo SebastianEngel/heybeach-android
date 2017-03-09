@@ -26,6 +26,7 @@ public class ApiClient {
     try {
       urlConnection = (HttpURLConnection) new URL(imagesUrl).openConnection();
       urlConnection.setRequestMethod("GET");
+      urlConnection.setRequestProperty("Cache-Control", "no-cache");
       urlConnection.setConnectTimeout(CONNECT_TIMEOUT_MS);
       urlConnection.setReadTimeout(READ_TIMEOUT_MS);
       urlConnection.connect();
