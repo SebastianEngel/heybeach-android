@@ -23,7 +23,7 @@ public class UsersApiClient {
     this.baseUrl = baseUrl;
     this.timeoutMs = timeoutMs;
     this.registrationResponseReader = new RegistrationResponseReader();
-    registrationRequestWriter = new RegistrationRequestWriter();
+    this.registrationRequestWriter = new RegistrationRequestWriter();
   }
 
   public UserJson register(String email, String password) throws ApiClientException {
