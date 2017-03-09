@@ -13,6 +13,8 @@ import java.util.List;
  */
 class ImageListJsonReader {
 
+  // Example:
+  //
   // [
   //   {
   //     "_id":"58b5784dde02e92969c8bf3b",
