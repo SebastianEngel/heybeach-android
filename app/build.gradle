@@ -43,7 +43,10 @@ android {
 
 }
 
+final SUPPORT_LIBRARY_VERSION = '25.2.0'
+
 dependencies {
   // Android support libraries
-  compile 'com.android.support:appcompat-v7:25.2.0'
+  compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY_VERSION}"
+  compile "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY_VERSION}"
 }
