@@ -44,7 +44,10 @@ public class UsersApiClient {
       outputStream.close();
 
       if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-        return registrationResponseReader.read(new BufferedInputStream(urlConnection.getInputStream()));
+        BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+        UserJson userJson = registrationResponseReader.read(inputStream);
+        inputStream.close();
+        return userJson;
       } else {
         throw new ApiClientException("API returned response code != 200. Is " + urlConnection.getResponseCode());
       }
