@@ -6,14 +6,14 @@ public class Image {
 
   private String id;
   private String name;
-  private String url;
+  private String relativeUrl;
   private int width;
   private int height;
 
-  public Image(String id, String name, String url, int width, int height) {
+  public Image(String id, String name, String relativeUrl, int width, int height) {
     this.id = id;
     this.name = name;
-    this.url = url;
+    this.relativeUrl = relativeUrl;
     this.width = width;
     this.height = height;
   }
@@ -26,8 +26,8 @@ public class Image {
     return name;
   }
 
-  public String getUrl() {
-    return url;
+  public String getRelativeUrl() {
+    return relativeUrl;
   }
 
   public int getWidth() {
@@ -47,12 +47,12 @@ public class Image {
         && height == image.height
         && Objects.equals(id, image.id)
         && Objects.equals(name, image.name)
-        && Objects.equals(url, image.url);
+        && Objects.equals(relativeUrl, image.relativeUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, url, width, height);
+    return Objects.hash(id, name, relativeUrl, width, height);
   }
 
   @Override
@@ -64,8 +64,8 @@ public class Image {
         + ", name='"
         + name
         + '\''
-        + ", url='"
-        + url
+        + ", relativeUrl='"
+        + relativeUrl
         + '\''
         + ", width="
         + width
