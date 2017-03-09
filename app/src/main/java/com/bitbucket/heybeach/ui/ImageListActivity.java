@@ -22,7 +22,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_image_list);
 
     imageView = (ImageView) findViewById(R.id.image);
     imageListPresenter = new ImageListPresenter(DependencyProvider.provideListImagesUseCase());
