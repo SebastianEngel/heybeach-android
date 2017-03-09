@@ -1,6 +1,7 @@
-package com.bitbucket.heybeach.model.api;
+package com.bitbucket.heybeach.model.api.beaches;
 
 import android.util.JsonReader;
+import com.bitbucket.heybeach.model.api.JsonReaderException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

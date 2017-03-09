@@ -1,4 +1,4 @@
-package com.bitbucket.heybeach.model.api;
+package com.bitbucket.heybeach.model.api.beaches;
 
 public class ImageJson {
 

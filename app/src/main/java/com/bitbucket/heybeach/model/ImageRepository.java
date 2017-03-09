@@ -1,9 +1,9 @@
 package com.bitbucket.heybeach.model;
 
 import com.bitbucket.heybeach.domain.Image;
-import com.bitbucket.heybeach.model.api.BeachesApiClient;
+import com.bitbucket.heybeach.model.api.beaches.BeachesApiClient;
 import com.bitbucket.heybeach.model.api.ApiClientException;
-import com.bitbucket.heybeach.model.api.ImageJson;
+import com.bitbucket.heybeach.model.api.beaches.ImageJson;
 import java.util.ArrayList;
 import java.util.List;
 

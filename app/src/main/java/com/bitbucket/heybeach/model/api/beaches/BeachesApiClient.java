@@ -1,22 +1,25 @@
-package com.bitbucket.heybeach.model.api;
+package com.bitbucket.heybeach.model.api.beaches;
 
+import com.bitbucket.heybeach.model.api.ApiClientException;
+import com.bitbucket.heybeach.model.api.JsonReaderException;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 public class BeachesApiClient {
 
-  private static final String IMAGES_PATH = "beaches";
-  private static final int CONNECT_TIMEOUT_MS = 15000;
-  private static final int READ_TIMEOUT_MS = 15000;
+  private static final String BEACHES_ENDPOINT = "beaches";
 
-  private final String imagesUrl;
+  private final String baseUrl;
+  private final int timeoutMs;
   private final ImageListJsonReader imageListJsonReader;
 
-  public BeachesApiClient(String baseUrl) {
-    this.imagesUrl = createImagesUrl(baseUrl);
+  public BeachesApiClient(String baseUrl, int timeoutMs) {
+    this.baseUrl = baseUrl;
+    this.timeoutMs = timeoutMs;
     this.imageListJsonReader = new ImageListJsonReader();
   }
 
@@ -24,16 +27,19 @@ public class BeachesApiClient {
     HttpURLConnection urlConnection = null;
 
     try {
-      urlConnection = (HttpURLConnection) new URL(imagesUrl).openConnection();
+      urlConnection = (HttpURLConnection) createImagesUrl().openConnection();
       urlConnection.setRequestMethod("GET");
       urlConnection.setRequestProperty("Cache-Control", "no-cache");
-      urlConnection.setConnectTimeout(CONNECT_TIMEOUT_MS);
-      urlConnection.setReadTimeout(READ_TIMEOUT_MS);
+      urlConnection.setConnectTimeout(timeoutMs);
+      urlConnection.setReadTimeout(timeoutMs);
       urlConnection.setDoInput(true);
       urlConnection.connect();
 
       if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-        return imageListJsonReader.readImageList(new BufferedInputStream(urlConnection.getInputStream()));
+        BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+        List<ImageJson> imageJsons = imageListJsonReader.readImageList(inputStream);
+        inputStream.close();
+        return imageJsons;
       } else {
         throw new ApiClientException("API returned response code != 200. Is " + urlConnection.getResponseCode());
       }
@@ -46,13 +52,13 @@ public class BeachesApiClient {
     }
   }
 
-  private String createImagesUrl(String baseUrl) {
+  private URL createImagesUrl() throws MalformedURLException {
     String imagesUrl = baseUrl;
 
     if (!imagesUrl.endsWith("/")) {
       imagesUrl = imagesUrl.concat("/");
     }
-    return imagesUrl.concat(IMAGES_PATH);
+    return new URL(imagesUrl.concat(BEACHES_ENDPOINT));
   }
 
 }

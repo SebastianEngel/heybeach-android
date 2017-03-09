@@ -1,7 +1,7 @@
 package com.bitbucket.heybeach.model;
 
 import com.bitbucket.heybeach.domain.Image;
-import com.bitbucket.heybeach.model.api.ImageJson;
+import com.bitbucket.heybeach.model.api.beaches.ImageJson;
 
 final class ImageJsonModelConverter {
 
