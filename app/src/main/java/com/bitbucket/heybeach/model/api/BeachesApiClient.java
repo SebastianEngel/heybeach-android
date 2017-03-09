@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public class ApiClient {
+public class BeachesApiClient {
 
   private static final String IMAGES_PATH = "beaches";
   private static final int CONNECT_TIMEOUT_MS = 15000;
@@ -15,7 +15,7 @@ public class ApiClient {
   private final String imagesUrl;
   private final ImageListJsonReader imageListJsonReader;
 
-  public ApiClient(String baseUrl) {
+  public BeachesApiClient(String baseUrl) {
     this.imagesUrl = createImagesUrl(baseUrl);
     this.imageListJsonReader = new ImageListJsonReader();
   }

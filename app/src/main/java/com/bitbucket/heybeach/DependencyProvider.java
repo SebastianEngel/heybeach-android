@@ -2,7 +2,7 @@ package com.bitbucket.heybeach;
 
 import com.bitbucket.heybeach.domain.ListImagesUseCase;
 import com.bitbucket.heybeach.model.ImageRepository;
-import com.bitbucket.heybeach.model.api.ApiClient;
+import com.bitbucket.heybeach.model.api.BeachesApiClient;
 import com.bitbucket.heybeach.ui.imageloading.ImageLoader;
 
 public final class DependencyProvider {
@@ -20,11 +20,11 @@ public final class DependencyProvider {
   }
 
   private static ImageRepository provideImageRepository() {
-    return new ImageRepository(provideApiClient());
+    return new ImageRepository(provideBeachesApiClient());
   }
 
-  private static ApiClient provideApiClient() {
-    return new ApiClient(BuildConfig.API_BASE_URL);
+  private static BeachesApiClient provideBeachesApiClient() {
+    return new BeachesApiClient(BuildConfig.API_BASE_URL);
   }
 
 }
