@@ -29,6 +29,7 @@ public class BeachesApiClient {
       urlConnection.setRequestProperty("Cache-Control", "no-cache");
       urlConnection.setConnectTimeout(CONNECT_TIMEOUT_MS);
       urlConnection.setReadTimeout(READ_TIMEOUT_MS);
+      urlConnection.setDoInput(true);
       urlConnection.connect();
 
       if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
