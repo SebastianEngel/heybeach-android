@@ -25,7 +25,7 @@ class RegistrationPresenter extends MvpPresenter<RegistrationPresenter.Registrat
 
         mainHandler.post(() -> view.showSuccessMessage());
       } catch (UseCaseException e) {
-        Log.e(LOG_TAG, "Failed to register user.", e);
+        mainHandler.post(() -> view.showFailureMessage());
       }
     });
   }
@@ -36,6 +36,7 @@ class RegistrationPresenter extends MvpPresenter<RegistrationPresenter.Registrat
 
   interface RegistrationView extends MvpView {
     void showSuccessMessage();
+    void showFailureMessage();
   }
 
 }

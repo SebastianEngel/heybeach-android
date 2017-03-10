@@ -44,7 +44,12 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
   @Override
   public void showSuccessMessage() {
-    Toast.makeText(this, "User registered successfully.", Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, R.string.registration_success_message, Toast.LENGTH_SHORT).show();
+  }
+
+  @Override
+  public void showFailureMessage() {
+    Toast.makeText(this, R.string.registration_failure_message, Toast.LENGTH_SHORT).show();
   }
 
   private void setupRegisterButton() {
