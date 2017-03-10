@@ -16,17 +16,13 @@ public class UsersApiClient {
 
   private final String baseUrl;
   private final int timeoutMs;
-  private final RegistrationRequestWriter registrationRequestWriter;
-  private final RegistrationResponseReader registrationResponseReader;
 
   public UsersApiClient(String baseUrl, int timeoutMs) {
     this.baseUrl = baseUrl;
     this.timeoutMs = timeoutMs;
-    this.registrationResponseReader = new RegistrationResponseReader();
-    this.registrationRequestWriter = new RegistrationRequestWriter();
   }
 
-  public UserJson register(String email, String password) throws ApiClientException {
+  public RegistrationResult register(String email, String password) throws ApiClientException {
     HttpURLConnection urlConnection = null;
 
     try {
@@ -40,14 +36,19 @@ public class UsersApiClient {
       urlConnection.setDoInput(true);
 
       OutputStream outputStream = urlConnection.getOutputStream();
+      RegistrationRequestWriter registrationRequestWriter = new RegistrationRequestWriter();
       registrationRequestWriter.write(email, password, outputStream);
       outputStream.close();
 
       if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+        String authToken = urlConnection.getHeaderField("x-auth");
+
         BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+        RegistrationResponseReader registrationResponseReader = new RegistrationResponseReader();
         UserJson userJson = registrationResponseReader.read(inputStream);
         inputStream.close();
-        return userJson;
+
+        return new RegistrationResult(authToken, userJson);
       } else {
         throw new ApiClientException("API returned response code != 200. Is " + urlConnection.getResponseCode());
       }

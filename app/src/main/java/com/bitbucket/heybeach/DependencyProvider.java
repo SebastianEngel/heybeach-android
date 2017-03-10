@@ -1,6 +1,7 @@
 package com.bitbucket.heybeach;
 
 import android.content.Context;
+import com.bitbucket.heybeach.domain.AccountManager;
 import com.bitbucket.heybeach.domain.ListImagesUseCase;
 import com.bitbucket.heybeach.domain.RegistrationUseCase;
 import com.bitbucket.heybeach.model.ImageRepository;
@@ -36,11 +37,15 @@ public final class DependencyProvider {
   }
 
   public static RegistrationUseCase provideRegistrationUseCase() {
-    return new RegistrationUseCase(provideUsersApiClient());
+    return new RegistrationUseCase(provideUsersApiClient(), provideAccountManager());
   }
 
   private static UsersApiClient provideUsersApiClient() {
     return new UsersApiClient(BuildConfig.API_BASE_URL, BuildConfig.API_TIMEOUT_MS);
+  }
+
+  public static AccountManager provideAccountManager() {
+    return AccountManager.getInstance();
   }
 
 }
