@@ -3,6 +3,7 @@ package com.bitbucket.heybeach;
 import android.content.Context;
 import com.bitbucket.heybeach.domain.AccountManager;
 import com.bitbucket.heybeach.domain.ListImagesUseCase;
+import com.bitbucket.heybeach.domain.LoginUseCase;
 import com.bitbucket.heybeach.domain.RegistrationUseCase;
 import com.bitbucket.heybeach.model.ImageRepository;
 import com.bitbucket.heybeach.model.api.beaches.BeachesApiClient;
@@ -20,31 +21,43 @@ public final class DependencyProvider {
     return ImageLoader.getInstance();
   }
 
+  // Use cases
+
   public static ListImagesUseCase provideListImagesUseCase() {
     return new ListImagesUseCase(provideImageRepository());
   }
+
+  public static LoginUseCase provideLoginUseCase() {
+    return new LoginUseCase(provideUsersApiClient(), provideAccountManagerSingleton());
+  }
+
+  public static RegistrationUseCase provideRegistrationUseCase() {
+    return new RegistrationUseCase(provideUsersApiClient(), provideAccountManagerSingleton());
+  }
+
+  // Repositories
 
   private static ImageRepository provideImageRepository() {
     return new ImageRepository(provideBeachesApiClient());
   }
 
+  // API clients
+
   private static BeachesApiClient provideBeachesApiClient() {
     return new BeachesApiClient(BuildConfig.API_BASE_URL, BuildConfig.API_TIMEOUT_MS);
-  }
-
-  public static ScreenNavigator provideScreenNavigator(Context context) {
-    return new ScreenNavigator(context);
-  }
-
-  public static RegistrationUseCase provideRegistrationUseCase() {
-    return new RegistrationUseCase(provideUsersApiClient(), provideAccountManager());
   }
 
   private static UsersApiClient provideUsersApiClient() {
     return new UsersApiClient(BuildConfig.API_BASE_URL, BuildConfig.API_TIMEOUT_MS);
   }
 
-  public static AccountManager provideAccountManager() {
+  // Other
+
+  public static ScreenNavigator provideScreenNavigator(Context context) {
+    return new ScreenNavigator(context);
+  }
+
+  public static AccountManager provideAccountManagerSingleton() {
     return AccountManager.getInstance();
   }
 

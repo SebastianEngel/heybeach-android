@@ -6,6 +6,14 @@
   <string name="beaches_list_title">Hey Beach</string>
   <string name="beaches_list_menu_account">Account</string>
 
+  <!-- Login screen -->
+  <string name="login_button_login">Login</string>
+  <string name="login_hint_email">Email</string>
+  <string name="login_hint_password">Password</string>
+  <string name="login_text_no_account_yet">No account, yet?</string>
+  <string name="login_button_register">Register</string>
+  <string name="login_failure_message">Login failed.</string>
+
   <!-- Registration screen -->
   <string name="registration_button_register">Register</string>
   <string name="registration_hint_email">Email</string>

@@ -10,26 +10,28 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
-import com.bitbucket.heybeach.domain.RegistrationUseCase;
+import com.bitbucket.heybeach.domain.LoginUseCase;
 
-public class RegistrationActivity extends AppCompatActivity implements RegistrationPresenter.RegistrationView {
+public class LoginActivity extends AppCompatActivity implements LoginPresenter.LoginView {
 
   private EditText emailField;
   private EditText passwordField;
-  private Button registerButton;
-  private RegistrationPresenter presenter;
+  private Button loginButton;
+  private Button registrationButton;
+  private LoginPresenter presenter;
 
   public static void start(Context context) {
-    context.startActivity(new Intent(context, RegistrationActivity.class));
+    context.startActivity(new Intent(context, LoginActivity.class));
   }
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_registration);
+    setContentView(R.layout.activity_login);
 
     bindViews();
-    setupRegisterButton();
+    setupLoginButton();
+    setupRegistrationButton();
     createPresenter();
   }
 
@@ -47,27 +49,34 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
   @Override
   public void showFailureMessage() {
-    Toast.makeText(this, R.string.registration_failure_message, Toast.LENGTH_SHORT).show();
+    Toast.makeText(this, R.string.login_failure_message, Toast.LENGTH_SHORT).show();
   }
 
   private void bindViews() {
     emailField = (EditText) findViewById(R.id.email_field);
     passwordField = (EditText) findViewById(R.id.password_field);
-    registerButton = (Button) findViewById(R.id.register_button);
+    loginButton = (Button) findViewById(R.id.login_button);
+    registrationButton = (Button) findViewById(R.id.registration_button);
   }
 
-  private void setupRegisterButton() {
-    registerButton.setOnClickListener(view -> {
+  private void setupLoginButton() {
+    loginButton.setOnClickListener(view -> {
       String email = emailField.getText().toString();
       String password = passwordField.getText().toString();
-      presenter.onRegistrationAction(email, password);
+      presenter.onLoginAction(email, password);
+    });
+  }
+
+  private void setupRegistrationButton() {
+    registrationButton.setOnClickListener(view -> {
+      presenter.onNavigateToRegistrationScreen();
     });
   }
 
   private void createPresenter() {
-    RegistrationUseCase registrationUseCase = DependencyProvider.provideRegistrationUseCase();
+    LoginUseCase loginUseCase = DependencyProvider.provideLoginUseCase();
     ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
-    presenter = new RegistrationPresenter(registrationUseCase, screenNavigator);
+    presenter = new LoginPresenter(loginUseCase, screenNavigator);
   }
 
 }
