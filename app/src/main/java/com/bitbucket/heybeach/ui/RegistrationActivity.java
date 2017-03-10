@@ -25,9 +25,8 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     passwordField = (EditText) findViewById(R.id.password_field);
     registerButton = (Button) findViewById(R.id.register_button);
 
-    registrationPresenter = new RegistrationPresenter(DependencyProvider.provideRegistrationUseCase());
-
     setupRegisterButton();
+    createPresenter();
   }
 
   @Override
@@ -43,11 +42,6 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
   }
 
   @Override
-  public void showSuccessMessage() {
-    Toast.makeText(this, R.string.registration_success_message, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override
   public void showFailureMessage() {
     Toast.makeText(this, R.string.registration_failure_message, Toast.LENGTH_SHORT).show();
   }
@@ -58,6 +52,12 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
       String password = passwordField.getText().toString();
       registrationPresenter.onRegistrationAction(email, password);
     });
+  }
+
+  private void createPresenter() {
+    RegistrationUseCase registrationUseCase = DependencyProvider.provideRegistrationUseCase();
+    ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
+    registrationPresenter = new RegistrationPresenter(registrationUseCase, screenNavigator);
   }
 
 }

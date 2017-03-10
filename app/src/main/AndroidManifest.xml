@@ -19,12 +19,8 @@
       </intent-filter>
     </activity>
 
-    <activity android:name=".ui.RegistrationActivity" android:label="HeyBeach Registration">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
+    <activity android:name=".ui.AccountActivity" />
+    <activity android:name=".ui.RegistrationActivity"/>
 
   </application>
 

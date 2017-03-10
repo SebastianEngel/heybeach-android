@@ -1,29 +1,23 @@
 package com.bitbucket.heybeach.ui;
 
-import android.util.Log;
 import com.bitbucket.heybeach.domain.RegistrationUseCase;
 import com.bitbucket.heybeach.domain.UseCaseException;
-import com.bitbucket.heybeach.domain.User;
 
 class RegistrationPresenter extends MvpPresenter<RegistrationPresenter.RegistrationView> {
 
-  private static final String LOG_TAG = RegistrationPresenter.class.getName();
-
   private final RegistrationUseCase registrationUseCase;
+  private final ScreenNavigator screenNavigator;
 
-  RegistrationPresenter(RegistrationUseCase registrationUseCase) {
+  RegistrationPresenter(RegistrationUseCase registrationUseCase, ScreenNavigator screenNavigator) {
     this.registrationUseCase = registrationUseCase;
+    this.screenNavigator = screenNavigator;
   }
 
   void onRegistrationAction(String email, String password) {
     backgroundHandler.post(() -> {
       try {
-        User user = registrationUseCase.register(email, password);
-        Log.d(LOG_TAG, "Successfully registered user: " + user);
-
-        // TODO Perform login now?
-
-        mainHandler.post(() -> view.showSuccessMessage());
+        registrationUseCase.register(email, password);
+        mainHandler.post(screenNavigator::navigateToAccountScreen);
       } catch (UseCaseException e) {
         mainHandler.post(() -> view.showFailureMessage());
       }
@@ -35,7 +29,6 @@ class RegistrationPresenter extends MvpPresenter<RegistrationPresenter.Registrat
   ///////////////////////////////////////////////////////////////////////////
 
   interface RegistrationView extends MvpView {
-    void showSuccessMessage();
     void showFailureMessage();
   }
 

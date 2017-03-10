@@ -7,7 +7,6 @@
   <string name="beaches_list_menu_account">Account</string>
 
   <!-- Registration screen -->
-  <string name="registration_success_message">User registration successful.</string>
   <string name="registration_failure_message">User registration failed.</string>
 
 </resources>
