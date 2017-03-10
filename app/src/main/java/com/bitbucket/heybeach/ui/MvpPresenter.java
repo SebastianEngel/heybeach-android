@@ -9,10 +9,9 @@ abstract class MvpPresenter<V extends MvpView> {
   V view;
   final Handler mainHandler;
   Handler backgroundHandler;
-  private final HandlerThread backgroundHandlerThread;
+  private HandlerThread backgroundHandlerThread;
 
   MvpPresenter() {
-    this.backgroundHandlerThread = new HandlerThread(getClass() + "-HandlerThread");
     this.mainHandler = new Handler(Looper.getMainLooper());
   }
 
@@ -22,6 +21,7 @@ abstract class MvpPresenter<V extends MvpView> {
 
   public void onAttach(V view) {
     this.view = view;
+    backgroundHandlerThread = new HandlerThread(getClass() + "-HandlerThread");
     backgroundHandlerThread.start();
     backgroundHandler = new Handler(backgroundHandlerThread.getLooper());
   }
