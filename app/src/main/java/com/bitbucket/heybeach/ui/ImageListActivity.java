@@ -5,17 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
 import com.bitbucket.heybeach.domain.Image;
 import java.util.List;
 
 public class ImageListActivity extends AppCompatActivity implements ImageListPresenter.ImageListView {
-
-  private static final String LOG_TAG = ImageListActivity.class.getName();
-
-  RecyclerView imageList;
 
   private ImageListPresenter imageListPresenter;
   private ImageListAdapter imageListAdapter;
@@ -24,10 +20,8 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_image_list);
-
-    imageList = (RecyclerView) findViewById(R.id.image_list);
+    setupToolbar();
     setupSignalsList();
-
     imageListPresenter = new ImageListPresenter(DependencyProvider.provideListImagesUseCase());
   }
 
@@ -45,11 +39,25 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
 
   @Override
   public void updateImages(List<Image> images) {
-    Log.i(LOG_TAG, "Updating list with images: " + images);
     imageListAdapter.updateItems(images);
   }
 
+  private void setupToolbar() {
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle(R.string.beaches_list_title);
+    toolbar.inflateMenu(R.menu.menu_beaches_list);
+    toolbar.setOnMenuItemClickListener(item -> {
+      switch (item.getItemId()) {
+        case R.id.account:
+          imageListPresenter.onNavigateToAccount();
+          return true;
+      }
+      return false;
+    });
+  }
+
   private void setupSignalsList() {
+    RecyclerView imageList = (RecyclerView) findViewById(R.id.image_list);
     imageList.setHasFixedSize(true);
 
     imageListAdapter = new ImageListAdapter();

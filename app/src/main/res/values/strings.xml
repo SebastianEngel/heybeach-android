@@ -1,3 +1,9 @@
 <resources>
-  <string name="app_name">HeyBeach</string>
+
+  <string name="app_name">Hey Beach</string>
+
+  <!-- Beaches list screen -->
+  <string name="beaches_list_title">Hey Beach</string>
+  <string name="beaches_list_menu_account">Account</string>
+
 </resources>

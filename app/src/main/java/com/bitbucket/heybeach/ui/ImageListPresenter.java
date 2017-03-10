@@ -23,6 +23,10 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
     loadImages();
   }
 
+  void onNavigateToAccount() {
+
+  }
+
   private void loadImages() {
     backgroundHandler.post(() -> {
       try {
