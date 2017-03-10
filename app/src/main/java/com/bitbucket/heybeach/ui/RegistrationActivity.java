@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
+import com.bitbucket.heybeach.domain.RegistrationUseCase;
 
 public class RegistrationActivity extends AppCompatActivity implements RegistrationPresenter.RegistrationView {
 
@@ -21,10 +22,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_registration);
 
-    emailField = (EditText) findViewById(R.id.email_field);
-    passwordField = (EditText) findViewById(R.id.password_field);
-    registerButton = (Button) findViewById(R.id.register_button);
-
+    bindViews();
     setupRegisterButton();
     createPresenter();
   }
@@ -44,6 +42,12 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
   @Override
   public void showFailureMessage() {
     Toast.makeText(this, R.string.registration_failure_message, Toast.LENGTH_SHORT).show();
+  }
+
+  private void bindViews() {
+    emailField = (EditText) findViewById(R.id.email_field);
+    passwordField = (EditText) findViewById(R.id.password_field);
+    registerButton = (Button) findViewById(R.id.register_button);
   }
 
   private void setupRegisterButton() {
