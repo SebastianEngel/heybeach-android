@@ -1,6 +1,6 @@
 package com.bitbucket.heybeach.model.api;
 
-public class ApiClientException extends Exception {
+public class ApiClientException extends RuntimeException {
 
   public ApiClientException(String message) {
     super(message);

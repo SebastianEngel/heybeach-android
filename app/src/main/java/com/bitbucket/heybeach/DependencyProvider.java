@@ -9,6 +9,7 @@ import com.bitbucket.heybeach.model.api.beaches.BeachesApiClient;
 import com.bitbucket.heybeach.model.api.users.UsersApiClient;
 import com.bitbucket.heybeach.ui.ScreenNavigator;
 import com.bitbucket.heybeach.ui.imageloading.ImageLoader;
+import java.util.concurrent.Executors;
 
 public final class DependencyProvider {
 
@@ -23,11 +24,11 @@ public final class DependencyProvider {
   // Use cases
 
   public static ListImagesUseCase provideListImagesUseCase() {
-    return new ListImagesUseCase(provideImageRepository());
+    return new ListImagesUseCase(provideImageRepository(), Executors.newSingleThreadExecutor());
   }
 
   public static AuthenticationUseCase provideAuthenticationUseCase() {
-    return new AuthenticationUseCase(provideUsersApiClient(), provideAccountManagerSingleton());
+    return new AuthenticationUseCase(provideUsersApiClient(), provideAccountManagerSingleton(), Executors.newSingleThreadExecutor());
   }
 
   // Repositories

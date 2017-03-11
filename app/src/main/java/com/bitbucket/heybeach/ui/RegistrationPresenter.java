@@ -14,14 +14,12 @@ class RegistrationPresenter extends MvpPresenter<RegistrationPresenter.Registrat
   }
 
   void onRegistrationAction(String email, String password) {
-    backgroundHandler.post(() -> {
-      try {
-        authenticationUseCase.register(email, password);
-        mainHandler.post(screenNavigator::navigateToAccountScreen);
-      } catch (UseCaseException e) {
-        mainHandler.post(() -> view.showFailureMessage());
-      }
-    });
+    try {
+      authenticationUseCase.register(email, password);
+      screenNavigator.navigateToAccountScreen();
+    } catch (UseCaseException e) {
+      view.showFailureMessage();
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////

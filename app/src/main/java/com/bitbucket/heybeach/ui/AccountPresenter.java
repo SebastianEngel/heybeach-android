@@ -24,14 +24,12 @@ class AccountPresenter extends MvpPresenter<AccountPresenter.AccountView> {
   }
 
   void onLogoutAction() {
-    backgroundHandler.post(() -> {
-      try {
-        authenticationUseCase.logout();
-        screenNavigator.navigateToLoginScreen();
-      } catch (UseCaseException e) {
-        mainHandler.post(() -> view.showFailureMessage());
-      }
-    });
+    try {
+      authenticationUseCase.logout();
+      screenNavigator.navigateToLoginScreen();
+    } catch (UseCaseException e) {
+      view.showFailureMessage();
+    }
   }
 
   private void loadUserDetails() {

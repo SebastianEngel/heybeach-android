@@ -16,7 +16,6 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
   private final ScreenNavigator screenNavigator;
 
   ImageListPresenter(ListImagesUseCase listImagesUseCase, AccountManager accountManager, ScreenNavigator screenNavigator) {
-    super();
     this.listImagesUseCase = listImagesUseCase;
     this.accountManager = accountManager;
     this.screenNavigator = screenNavigator;
@@ -37,14 +36,12 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
   }
 
   private void loadImages() {
-    backgroundHandler.post(() -> {
-      try {
-        List<Image> images = listImagesUseCase.getImages();
-        mainHandler.post(() -> view.updateImages(images));
-      } catch (UseCaseException e) {
-        Log.e(LOG_TAG, "Failed to load images.", e);
-      }
-    });
+    try {
+      List<Image> images = listImagesUseCase.getImages();
+      view.updateImages(images);
+    } catch (UseCaseException e) {
+      Log.e(LOG_TAG, "Failed to load images.", e);
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////

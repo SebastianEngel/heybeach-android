@@ -17,22 +17,16 @@ class LoginPresenter extends MvpPresenter<LoginPresenter.LoginView> {
     view.disableFormElements();
     view.showProgressIndicator();
 
-    backgroundHandler.post(() -> {
-      try {
-        authenticationUseCase.login(email, password);
-        mainHandler.post(() -> {
-          view.hideProgressIndicator();
-          screenNavigator.navigateToAccountScreen();
-          view.close();
-        });
-      } catch (UseCaseException e) {
-        mainHandler.post(() -> {
-          view.hideProgressIndicator();
-          view.enableFormElements();
-          view.showFailureMessage();
-        });
-      }
-    });
+    try {
+      authenticationUseCase.login(email, password);
+      view.hideProgressIndicator();
+      screenNavigator.navigateToAccountScreen();
+      view.close();
+    } catch (UseCaseException e) {
+      view.hideProgressIndicator();
+      view.enableFormElements();
+      view.showFailureMessage();
+    }
   }
 
   void onNavigateToRegistrationScreen() {

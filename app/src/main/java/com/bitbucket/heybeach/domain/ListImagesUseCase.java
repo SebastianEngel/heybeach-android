@@ -1,21 +1,23 @@
 package com.bitbucket.heybeach.domain;
 
 import com.bitbucket.heybeach.model.ImageRepository;
-import com.bitbucket.heybeach.model.RepositoryException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public class ListImagesUseCase {
 
   private final ImageRepository imageRepository;
+  private final ExecutorService executorService;
 
-  public ListImagesUseCase(ImageRepository imageRepository) {
+  public ListImagesUseCase(ImageRepository imageRepository, ExecutorService executorService) {
     this.imageRepository = imageRepository;
+    this.executorService = executorService;
   }
 
   public List<Image> getImages() throws UseCaseException {
     try {
-      return imageRepository.getImages();
-    } catch (RepositoryException e) {
+      return executorService.submit(imageRepository::getImages).get();
+    } catch (Exception e) {
       throw new UseCaseException("Failed to load images from repository.", e);
     }
   }
