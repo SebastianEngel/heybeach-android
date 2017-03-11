@@ -30,4 +30,8 @@ public class AccountManager {
     this.authenticatedUser = null;
   }
 
+  public String getAuthToken() {
+    return authToken;
+  }
+
 }

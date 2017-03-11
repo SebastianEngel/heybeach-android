@@ -14,6 +14,7 @@ public class UsersApiClient {
 
   private static final String REGISTRATION_ENDPOINT = "user/register";
   private static final String LOGIN_ENDPOINT = "user/login";
+  private static final String LOGOUT_ENDPOINT = "user/logout";
 
   private final String baseUrl;
   private final int timeoutMs;
@@ -101,6 +102,30 @@ public class UsersApiClient {
     }
   }
 
+  public void logout(String authToken) throws ApiClientException {
+    HttpURLConnection urlConnection = null;
+
+    try {
+      urlConnection = (HttpURLConnection) createFullLogoutUrl().openConnection();
+      urlConnection.setRequestMethod("DELETE");
+      urlConnection.setRequestProperty("Cache-Control", "no-cache");
+      urlConnection.setRequestProperty("x-auth", authToken);
+      urlConnection.setConnectTimeout(timeoutMs);
+      urlConnection.setReadTimeout(timeoutMs);
+      urlConnection.connect();
+
+      if (urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+        throw new ApiClientException("API returned response code != 200. Is " + urlConnection.getResponseCode());
+      }
+    } catch (IOException e) {
+      throw new ApiClientException(e);
+    } finally {
+      if (urlConnection != null) {
+        urlConnection.disconnect();
+      }
+    }
+  }
+
   private URL createFullRegistrationUrl() throws MalformedURLException {
     String registrationUrl = baseUrl;
     if (!registrationUrl.endsWith("/")) {
@@ -115,6 +140,14 @@ public class UsersApiClient {
       loginUrl = loginUrl.concat("/");
     }
     return new URL(loginUrl.concat(LOGIN_ENDPOINT));
+  }
+
+  private URL createFullLogoutUrl() throws MalformedURLException {
+    String logoutUrl = baseUrl;
+    if (!logoutUrl.endsWith("/")) {
+      logoutUrl = logoutUrl.concat("/");
+    }
+    return new URL(logoutUrl.concat(LOGOUT_ENDPOINT));
   }
 
 }

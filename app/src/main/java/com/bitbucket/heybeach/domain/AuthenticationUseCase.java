@@ -38,4 +38,13 @@ public class AuthenticationUseCase {
     }
   }
 
+  public void logout() throws UseCaseException {
+    try {
+      apiClient.logout(accountManager.getAuthToken());
+      accountManager.clearAuthenticatedUser();
+    } catch (ApiClientException e) {
+      throw new UseCaseException("Failed to logout user.", e);
+    }
+  }
+
 }
