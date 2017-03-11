@@ -2,9 +2,8 @@ package com.bitbucket.heybeach;
 
 import android.content.Context;
 import com.bitbucket.heybeach.domain.AccountManager;
+import com.bitbucket.heybeach.domain.AuthenticationUseCase;
 import com.bitbucket.heybeach.domain.ListImagesUseCase;
-import com.bitbucket.heybeach.domain.LoginUseCase;
-import com.bitbucket.heybeach.domain.RegistrationUseCase;
 import com.bitbucket.heybeach.model.ImageRepository;
 import com.bitbucket.heybeach.model.api.beaches.BeachesApiClient;
 import com.bitbucket.heybeach.model.api.users.UsersApiClient;
@@ -27,12 +26,8 @@ public final class DependencyProvider {
     return new ListImagesUseCase(provideImageRepository());
   }
 
-  public static LoginUseCase provideLoginUseCase() {
-    return new LoginUseCase(provideUsersApiClient(), provideAccountManagerSingleton());
-  }
-
-  public static RegistrationUseCase provideRegistrationUseCase() {
-    return new RegistrationUseCase(provideUsersApiClient(), provideAccountManagerSingleton());
+  public static AuthenticationUseCase provideAuthenticationUseCase() {
+    return new AuthenticationUseCase(provideUsersApiClient(), provideAccountManagerSingleton());
   }
 
   // Repositories

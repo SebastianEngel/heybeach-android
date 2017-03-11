@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
-import com.bitbucket.heybeach.domain.LoginUseCase;
+import com.bitbucket.heybeach.domain.AuthenticationUseCase;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.LoginView {
 
@@ -74,9 +74,9 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
   }
 
   private void createPresenter() {
-    LoginUseCase loginUseCase = DependencyProvider.provideLoginUseCase();
+    AuthenticationUseCase authenticationUseCase = DependencyProvider.provideAuthenticationUseCase();
     ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
-    presenter = new LoginPresenter(loginUseCase, screenNavigator);
+    presenter = new LoginPresenter(authenticationUseCase, screenNavigator);
   }
 
 }

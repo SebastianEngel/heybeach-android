@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
-import com.bitbucket.heybeach.domain.RegistrationUseCase;
+import com.bitbucket.heybeach.domain.AuthenticationUseCase;
 
 public class RegistrationActivity extends AppCompatActivity implements RegistrationPresenter.RegistrationView {
 
@@ -65,9 +65,9 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
   }
 
   private void createPresenter() {
-    RegistrationUseCase registrationUseCase = DependencyProvider.provideRegistrationUseCase();
+    AuthenticationUseCase authenticationUseCase = DependencyProvider.provideAuthenticationUseCase();
     ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
-    presenter = new RegistrationPresenter(registrationUseCase, screenNavigator);
+    presenter = new RegistrationPresenter(authenticationUseCase, screenNavigator);
   }
 
 }

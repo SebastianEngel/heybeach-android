@@ -1,22 +1,22 @@
 package com.bitbucket.heybeach.ui;
 
-import com.bitbucket.heybeach.domain.LoginUseCase;
+import com.bitbucket.heybeach.domain.AuthenticationUseCase;
 import com.bitbucket.heybeach.domain.UseCaseException;
 
 class LoginPresenter extends MvpPresenter<LoginPresenter.LoginView> {
 
-  private final LoginUseCase loginUseCase;
+  private final AuthenticationUseCase authenticationUseCase;
   private final ScreenNavigator screenNavigator;
 
-  LoginPresenter(LoginUseCase loginUseCase, ScreenNavigator screenNavigator) {
-    this.loginUseCase = loginUseCase;
+  LoginPresenter(AuthenticationUseCase authenticationUseCase, ScreenNavigator screenNavigator) {
+    this.authenticationUseCase = authenticationUseCase;
     this.screenNavigator = screenNavigator;
   }
 
   void onLoginAction(String email, String password) {
     backgroundHandler.post(() -> {
       try {
-        loginUseCase.login(email, password);
+        authenticationUseCase.login(email, password);
         mainHandler.post(screenNavigator::navigateToAccountScreen);
       } catch (UseCaseException e) {
         mainHandler.post(() -> view.showFailureMessage());
