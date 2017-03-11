@@ -1,7 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.AccountActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/element_spacing_default"
+      style="@style/Widget.HeyBeach.Toolbar"/>
+
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:columnCount="2"
+      android:padding="@dimen/content_padding_default">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/element_spacing_double"
+        android:layout_marginEnd="@dimen/element_spacing_double"
+        android:layout_marginBottom="@dimen/element_spacing_default"
+        android:text="@string/account_label_user_id"/>
+
+    <TextView
+        android:id="@+id/user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/element_spacing_default"
+        tools:text="32432857834754857"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/element_spacing_double"
+        android:layout_marginEnd="@dimen/element_spacing_double"
+        android:text="@string/account_label_user_email"/>
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="user@exmaple.com"/>
+
+  </GridLayout>
+
+  <Button
+      android:id="@+id/logout_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/account_button_logout"/>
 
 </LinearLayout>

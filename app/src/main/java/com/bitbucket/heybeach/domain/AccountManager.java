@@ -34,4 +34,8 @@ public class AccountManager {
     return authToken;
   }
 
+  public User getAuthenticatedUser() {
+    return authenticatedUser;
+  }
+
 }

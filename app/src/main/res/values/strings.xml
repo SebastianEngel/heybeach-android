@@ -20,4 +20,11 @@
   <string name="registration_hint_password">Password</string>
   <string name="registration_failure_message">User registration failed.</string>
 
+  <!-- Account screen -->
+  <string name="account_toolbar_title">Account</string>
+  <string name="account_label_user_id">User ID:</string>
+  <string name="account_label_user_email">Email:</string>
+  <string name="account_button_logout">Logout</string>
+  <string name="account_logout_failure_message">Logout failed.</string>
+
 </resources>
