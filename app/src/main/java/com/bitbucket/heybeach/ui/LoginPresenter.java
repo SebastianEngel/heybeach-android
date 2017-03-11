@@ -14,12 +14,23 @@ class LoginPresenter extends MvpPresenter<LoginPresenter.LoginView> {
   }
 
   void onLoginAction(String email, String password) {
+    view.disableFormElements();
+    view.showProgressIndicator();
+
     backgroundHandler.post(() -> {
       try {
         authenticationUseCase.login(email, password);
-        mainHandler.post(screenNavigator::navigateToAccountScreen);
+        mainHandler.post(() -> {
+          view.hideProgressIndicator();
+          screenNavigator.navigateToAccountScreen();
+          view.close();
+        });
       } catch (UseCaseException e) {
-        mainHandler.post(() -> view.showFailureMessage());
+        mainHandler.post(() -> {
+          view.hideProgressIndicator();
+          view.enableFormElements();
+          view.showFailureMessage();
+        });
       }
     });
   }
@@ -33,7 +44,15 @@ class LoginPresenter extends MvpPresenter<LoginPresenter.LoginView> {
   ///////////////////////////////////////////////////////////////////////////
 
   interface LoginView extends MvpView {
+    void showProgressIndicator();
+    void hideProgressIndicator();
+
+    void enableFormElements();
+    void disableFormElements();
+
     void showFailureMessage();
+
+    void close();
   }
 
 }

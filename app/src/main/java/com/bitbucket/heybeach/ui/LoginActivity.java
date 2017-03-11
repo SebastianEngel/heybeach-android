@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
@@ -17,12 +19,17 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
   private EditText emailField;
   private EditText passwordField;
   private Button loginButton;
+  private ProgressBar progressIndicator;
   private Button registrationButton;
   private LoginPresenter presenter;
 
   public static void start(Context context) {
     context.startActivity(new Intent(context, LoginActivity.class));
   }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Activity lifecycle
+  ///////////////////////////////////////////////////////////////////////////
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,14 +54,54 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
     super.onStop();
   }
 
+  ///////////////////////////////////////////////////////////////////////////
+  // MVP view implementation
+  ///////////////////////////////////////////////////////////////////////////
+
+  @Override
+  public void showProgressIndicator() {
+    progressIndicator.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void hideProgressIndicator() {
+    progressIndicator.setVisibility(View.INVISIBLE);
+  }
+
+  @Override
+  public void enableFormElements() {
+    emailField.setEnabled(true);
+    passwordField.setEnabled(true);
+    loginButton.setEnabled(true);
+    registrationButton.setEnabled(true);
+  }
+
+  @Override
+  public void disableFormElements() {
+    emailField.setEnabled(false);
+    passwordField.setEnabled(false);
+    loginButton.setEnabled(false);
+    registrationButton.setEnabled(false);
+  }
+
   @Override
   public void showFailureMessage() {
     Toast.makeText(this, R.string.login_failure_message, Toast.LENGTH_SHORT).show();
   }
 
+  @Override
+  public void close() {
+    finish();
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Private functionality
+  ///////////////////////////////////////////////////////////////////////////
+
   private void bindViews() {
     emailField = (EditText) findViewById(R.id.email_field);
     passwordField = (EditText) findViewById(R.id.password_field);
+    progressIndicator = (ProgressBar) findViewById(R.id.progress_indicator);
     loginButton = (Button) findViewById(R.id.login_button);
     registrationButton = (Button) findViewById(R.id.registration_button);
   }
