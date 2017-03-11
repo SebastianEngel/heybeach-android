@@ -8,13 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
+import com.bitbucket.heybeach.domain.AccountManager;
 import com.bitbucket.heybeach.domain.Image;
+import com.bitbucket.heybeach.domain.ListImagesUseCase;
 import java.util.List;
 
 public class ImageListActivity extends AppCompatActivity implements ImageListPresenter.ImageListView {
 
-  private ImageListPresenter imageListPresenter;
-  private ImageListAdapter imageListAdapter;
+  private ImageListPresenter presenter;
+  private ImageListAdapter listAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -22,24 +24,24 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
     setContentView(R.layout.activity_image_list);
     setupToolbar();
     setupSignalsList();
-    imageListPresenter = new ImageListPresenter(DependencyProvider.provideListImagesUseCase());
+    createPresenter();
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    imageListPresenter.onAttach(this);
+    presenter.onAttach(this);
   }
 
   @Override
   protected void onStop() {
-    imageListPresenter.onDetach();
+    presenter.onDetach();
     super.onStop();
   }
 
   @Override
   public void updateImages(List<Image> images) {
-    imageListAdapter.updateItems(images);
+    listAdapter.updateItems(images);
   }
 
   private void setupToolbar() {
@@ -49,7 +51,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
     toolbar.setOnMenuItemClickListener(item -> {
       switch (item.getItemId()) {
         case R.id.account:
-          imageListPresenter.onNavigateToAccount();
+          presenter.onNavigateToAccount();
           return true;
       }
       return false;
@@ -60,8 +62,8 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
     RecyclerView imageList = (RecyclerView) findViewById(R.id.image_list);
     imageList.setHasFixedSize(true);
 
-    imageListAdapter = new ImageListAdapter();
-    imageList.setAdapter(imageListAdapter);
+    listAdapter = new ImageListAdapter();
+    imageList.setAdapter(listAdapter);
 
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -69,6 +71,13 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
 
     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
     imageList.addItemDecoration(dividerItemDecoration);
+  }
+
+  private void createPresenter() {
+    ListImagesUseCase listImagesUseCase = DependencyProvider.provideListImagesUseCase();
+    AccountManager accountManager = DependencyProvider.provideAccountManagerSingleton();
+    ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
+    presenter = new ImageListPresenter(listImagesUseCase, accountManager, screenNavigator);
   }
 
 }
