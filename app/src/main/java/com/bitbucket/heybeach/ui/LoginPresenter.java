@@ -40,12 +40,9 @@ class LoginPresenter extends MvpPresenter<LoginPresenter.LoginView> {
   interface LoginView extends MvpView {
     void showProgressIndicator();
     void hideProgressIndicator();
-
     void enableFormElements();
     void disableFormElements();
-
     void showFailureMessage();
-
     void close();
   }
 
