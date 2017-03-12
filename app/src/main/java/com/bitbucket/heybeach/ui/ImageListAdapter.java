@@ -3,8 +3,6 @@ package com.bitbucket.heybeach.ui;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import com.bitbucket.heybeach.BuildConfig;
 import com.bitbucket.heybeach.domain.Image;
 import com.bitbucket.heybeach.ui.imageloading.ImageLoader;
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder>
 
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    return new ViewHolder(new ImageView(parent.getContext()));
+    return new ViewHolder(new TitledImageView(parent.getContext()));
   }
 
   @Override
@@ -37,15 +35,16 @@ class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder>
 
   static class ViewHolder extends RecyclerView.ViewHolder {
 
-    private ImageView imageView;
+    private TitledImageView imageView;
 
     ViewHolder(View itemView) {
       super(itemView);
-      imageView = (ImageView) itemView;
+      imageView = (TitledImageView) itemView;
     }
 
     void bind(Image image) {
-      ImageLoader.getInstance().load(BuildConfig.API_BASE_URL + "/" + image.getRelativeUrl(), imageView);
+      imageView.setMinimumHeight(image.getHeight());
+      ImageLoader.getInstance().load(image, imageView);
     }
 
   }
