@@ -3,9 +3,7 @@ package com.bitbucket.heybeach.ui.imageloading;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import com.bitbucket.heybeach.BuildConfig;
-import com.bitbucket.heybeach.domain.Image;
-import com.bitbucket.heybeach.ui.TitledImageView;
+import android.widget.ImageView;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -19,14 +17,12 @@ class ImageDownload implements Runnable {
   private static final int CONNECT_TIMEOUT_MS = 15000;
   private static final int READ_TIMEOUT_MS = 15000;
 
-  private Image image;
   private final URL imageUrl;
-  private final WeakReference<TitledImageView> imageView;
+  private final WeakReference<ImageView> imageView;
   private boolean canceled;
 
-  ImageDownload(Image image, TitledImageView imageView) throws MalformedURLException {
-    this.image = image;
-    this.imageUrl = new URL(BuildConfig.API_BASE_URL + "/" + image.getRelativeUrl());
+  ImageDownload(String url, ImageView imageView) throws MalformedURLException {
+    this.imageUrl = new URL(url);
     this.imageView = new WeakReference<>(imageView);
   }
 
@@ -52,9 +48,9 @@ class ImageDownload implements Runnable {
 
         Bitmap bitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
 
-        TitledImageView imageView = this.imageView.get();
+        ImageView imageView = this.imageView.get();
         if (!canceled && imageView != null) {
-          imageView.getHandler().post(() -> imageView.setImageBitmapWithTitle(bitmap, image.getName()));
+          imageView.getHandler().post(() -> imageView.setImageBitmap(bitmap));
         }
       } else {
         Log.e(LOG_TAG, "Failed to load image. API returned response code != 200. Response code was " + responseCode);

@@ -8,7 +8,6 @@
 
   <dimen name="toolbar_elevation">4dp</dimen>
 
-  <dimen name="image_title_text_size">12sp</dimen>
-  <dimen name="image_title_text_spacing">8dp</dimen>
+  <dimen name="staggered_grid_spacing">8dp</dimen>
 
 </resources>

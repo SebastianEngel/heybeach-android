@@ -1,8 +1,7 @@
 package com.bitbucket.heybeach.ui.imageloading;
 
 import android.util.Log;
-import com.bitbucket.heybeach.domain.Image;
-import com.bitbucket.heybeach.ui.TitledImageView;
+import android.widget.ImageView;
 import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -14,7 +13,7 @@ public class ImageLoader {
   private static final String LOG_TAG = ImageLoader.class.getName();
 
   private final ExecutorService executorService = Executors.newFixedThreadPool(5);
-  private final Map<TitledImageView, ImageDownload> viewToDownloads = new WeakHashMap<>();
+  private final Map<ImageView, ImageDownload> viewToDownloads = new WeakHashMap<>();
 
   private static ImageLoader instance;
 
@@ -27,7 +26,7 @@ public class ImageLoader {
     return instance;
   }
 
-  public void load(Image image, TitledImageView imageView) {
+  public void load(String imageUrl, ImageView imageView) {
     // If there is already an image download for this ImageView, remove it.
     ImageDownload imageDownload = viewToDownloads.remove(imageView);
     if (imageDownload != null) {
@@ -35,7 +34,7 @@ public class ImageLoader {
     }
 
     try {
-      imageDownload = new ImageDownload(image, imageView);
+      imageDownload = new ImageDownload(imageUrl, imageView);
       viewToDownloads.put(imageView, imageDownload);
       executorService.submit(imageDownload);
     } catch (MalformedURLException e) {
