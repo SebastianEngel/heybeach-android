@@ -1,7 +1,6 @@
 package com.bitbucket.heybeach.ui;
 
 import android.util.Log;
-import com.bitbucket.heybeach.domain.AccountManager;
 import com.bitbucket.heybeach.domain.Image;
 import com.bitbucket.heybeach.domain.ListImagesUseCase;
 import com.bitbucket.heybeach.domain.UseCaseException;
@@ -12,12 +11,10 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
   private static final String LOG_TAG = ImageListPresenter.class.getName();
 
   private final ListImagesUseCase listImagesUseCase;
-  private final AccountManager accountManager;
   private final ScreenNavigator screenNavigator;
 
-  ImageListPresenter(ListImagesUseCase listImagesUseCase, AccountManager accountManager, ScreenNavigator screenNavigator) {
+  ImageListPresenter(ListImagesUseCase listImagesUseCase, ScreenNavigator screenNavigator) {
     this.listImagesUseCase = listImagesUseCase;
-    this.accountManager = accountManager;
     this.screenNavigator = screenNavigator;
   }
 
@@ -28,11 +25,7 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
   }
 
   void onNavigateToAccount() {
-    if (accountManager.isUserAuthenticated()) {
-      screenNavigator.navigateToAccountScreen();
-    } else {
-      screenNavigator.navigateToLoginScreen();
-    }
+    screenNavigator.navigateToAccountScreen();
   }
 
   private void loadImages() {

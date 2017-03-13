@@ -21,7 +21,6 @@ class LoginPresenter extends MvpPresenter<LoginPresenter.LoginView> {
       authenticationUseCase.login(email, password);
       view.hideProgressIndicator();
       screenNavigator.navigateToAccountScreen();
-      view.close();
     } catch (UseCaseException e) {
       view.hideProgressIndicator();
       view.enableFormElements();
@@ -43,7 +42,6 @@ class LoginPresenter extends MvpPresenter<LoginPresenter.LoginView> {
     void enableFormElements();
     void disableFormElements();
     void showFailureMessage();
-    void close();
   }
 
 }

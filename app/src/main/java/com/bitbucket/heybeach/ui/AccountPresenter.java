@@ -20,13 +20,18 @@ class AccountPresenter extends MvpPresenter<AccountPresenter.AccountView> {
   @Override
   public void onAttach(AccountView view) {
     super.onAttach(view);
-    loadUserDetails();
+
+    if (accountManager.isUserAuthenticated()) {
+      loadUserDetails();
+    } else {
+      screenNavigator.navigateToLoginScreen();
+    }
   }
 
   void onLogoutAction() {
     try {
       authenticationUseCase.logout();
-      screenNavigator.navigateToLoginScreen();
+      view.close();
     } catch (UseCaseException e) {
       view.showFailureMessage();
     }
@@ -43,6 +48,7 @@ class AccountPresenter extends MvpPresenter<AccountPresenter.AccountView> {
 
   interface AccountView extends MvpView {
     void setUserDetails(User user);
+    void close();
     void showFailureMessage();
   }
 

@@ -1,11 +1,12 @@
 package com.bitbucket.heybeach.ui;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +16,7 @@ import com.bitbucket.heybeach.domain.AccountManager;
 import com.bitbucket.heybeach.domain.AuthenticationUseCase;
 import com.bitbucket.heybeach.domain.User;
 
-public class AccountActivity extends AppCompatActivity implements AccountPresenter.AccountView {
+public class AccountFragment extends Fragment implements AccountPresenter.AccountView {
 
   private Toolbar toolbar;
   private TextView userIdText;
@@ -23,18 +24,22 @@ public class AccountActivity extends AppCompatActivity implements AccountPresent
   private Button logoutButton;
   private AccountPresenter presenter;
 
-  public static void start(Context context) {
-    context.startActivity(new Intent(context, AccountActivity.class));
+  static AccountFragment newInstance() {
+    return new AccountFragment();
   }
 
   ///////////////////////////////////////////////////////////////////////////
-  // Activity lifecycle
+  // Fragment lifecycle
   ///////////////////////////////////////////////////////////////////////////
 
+  @Nullable @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    return inflater.inflate(R.layout.fragment_account, container, false);
+  }
+
   @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_account);
+  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
     bindViews();
     setupToolbar();
     setupLogoutButton();
@@ -42,13 +47,13 @@ public class AccountActivity extends AppCompatActivity implements AccountPresent
   }
 
   @Override
-  protected void onStart() {
+  public void onStart() {
     super.onStart();
     presenter.onAttach(this);
   }
 
   @Override
-  protected void onStop() {
+  public void onStop() {
     presenter.onDetach();
     super.onStop();
   }
@@ -64,8 +69,13 @@ public class AccountActivity extends AppCompatActivity implements AccountPresent
   }
 
   @Override
+  public void close() {
+    getActivity().finish();
+  }
+
+  @Override
   public void showFailureMessage() {
-    Toast.makeText(this, R.string.account_logout_failure_message, Toast.LENGTH_SHORT).show();
+    Toast.makeText(getActivity(), R.string.account_logout_failure_message, Toast.LENGTH_SHORT).show();
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -73,10 +83,10 @@ public class AccountActivity extends AppCompatActivity implements AccountPresent
   ///////////////////////////////////////////////////////////////////////////
 
   private void bindViews() {
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
-    userIdText = (TextView) findViewById(R.id.user_id);
-    emailText = (TextView) findViewById(R.id.email);
-    logoutButton = (Button) findViewById(R.id.logout_button);
+    toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
+    userIdText = (TextView) getView().findViewById(R.id.user_id);
+    emailText = (TextView) getView().findViewById(R.id.email);
+    logoutButton = (Button) getView().findViewById(R.id.logout_button);
   }
 
   private void setupToolbar() {
@@ -90,7 +100,7 @@ public class AccountActivity extends AppCompatActivity implements AccountPresent
   private void createPresenter() {
     AuthenticationUseCase authenticationUseCase = DependencyProvider.provideAuthenticationUseCase();
     AccountManager accountManager = DependencyProvider.provideAccountManagerSingleton();
-    ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
+    ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(getActivity());
     presenter = new AccountPresenter(authenticationUseCase, accountManager, screenNavigator);
   }
 

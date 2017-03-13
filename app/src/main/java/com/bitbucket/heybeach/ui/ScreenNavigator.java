@@ -11,15 +11,15 @@ public class ScreenNavigator {
   }
 
   void navigateToAccountScreen() {
-    AccountActivity.start(context);
+    LoginActivity.startWithAccountScreen(context);
   }
 
   void navigateToLoginScreen() {
-    LoginActivity.start(context);
+    LoginActivity.startWithLoginScreen(context);
   }
 
   void navigateToRegistrationScreen() {
-    RegistrationActivity.start(context);
+    LoginActivity.startWithRegistrationScreen(context);
   }
 
 }

@@ -4,27 +4,38 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-import com.bitbucket.heybeach.DependencyProvider;
-import com.bitbucket.heybeach.R;
-import com.bitbucket.heybeach.domain.AuthenticationUseCase;
+import android.util.Log;
 
-public class LoginActivity extends AppCompatActivity implements LoginPresenter.LoginView {
+public class LoginActivity extends AppCompatActivity {
 
-  private EditText emailField;
-  private EditText passwordField;
-  private Button loginButton;
-  private ProgressBar progressIndicator;
-  private Button registrationButton;
-  private LoginPresenter presenter;
+  private static final String LOG_TAG = LoginActivity.class.getName();
+  private static final String EXTRA_START_WITH_SCREEN = "EXTRA_START_WITH_SCREEN";
+  private static final String ACCOUNT_SCREEN = "ACCOUNT_SCREEN";
+  private static final String LOGIN_SCREEN = "LOGIN_SCREEN";
+  private static final String REGISTRATION_SCREEN = "REGISTRATION_SCREEN";
 
-  public static void start(Context context) {
-    context.startActivity(new Intent(context, LoginActivity.class));
+  public static void startWithAccountScreen(Context context) {
+    Intent intent = new Intent(context, LoginActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    intent.putExtra(EXTRA_START_WITH_SCREEN, ACCOUNT_SCREEN);
+    context.startActivity(intent);
+  }
+
+  public static void startWithLoginScreen(Context context) {
+    Intent intent = new Intent(context, LoginActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    intent.putExtra(EXTRA_START_WITH_SCREEN, LOGIN_SCREEN);
+    context.startActivity(intent);
+  }
+
+  public static void startWithRegistrationScreen(Context context) {
+    Intent intent = new Intent(context, LoginActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+    intent.putExtra(EXTRA_START_WITH_SCREEN, REGISTRATION_SCREEN);
+    context.startActivity(intent);
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -34,96 +45,61 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.L
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_login);
-
-    bindViews();
-    setupLoginButton();
-    setupRegistrationButton();
-    createPresenter();
+    displayScreen(getIntent());
   }
 
   @Override
-  protected void onStart() {
-    super.onStart();
-    presenter.onAttach(this);
-  }
-
-  @Override
-  protected void onStop() {
-    presenter.onDetach();
-    super.onStop();
+  protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    displayScreen(intent);
   }
 
   ///////////////////////////////////////////////////////////////////////////
-  // MVP view implementation
+  // Fragment swapping
   ///////////////////////////////////////////////////////////////////////////
 
-  @Override
-  public void showProgressIndicator() {
-    progressIndicator.setVisibility(View.VISIBLE);
+  private void displayScreen(Intent intent) {
+    if (intent.hasExtra(EXTRA_START_WITH_SCREEN)) {
+      String screenToStart = intent.getStringExtra(EXTRA_START_WITH_SCREEN);
+      if (screenToStart != null) {
+        switch (screenToStart) {
+          case ACCOUNT_SCREEN:
+            displayAccountScreen();
+            break;
+          case LOGIN_SCREEN:
+            displayLoginView();
+            break;
+          case REGISTRATION_SCREEN:
+            displayRegistrationView();
+            break;
+        }
+      }
+    } else {
+      Log.w(LOG_TAG, "Activity started without expected intent extra: " + EXTRA_START_WITH_SCREEN);
+    }
   }
 
-  @Override
-  public void hideProgressIndicator() {
-    progressIndicator.setVisibility(View.INVISIBLE);
+  private void displayAccountScreen() {
+    if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+      FragmentManager.BackStackEntry firstFragment = getSupportFragmentManager().getBackStackEntryAt(0);
+      getSupportFragmentManager().popBackStack(firstFragment.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    fragmentTransaction.replace(android.R.id.content, AccountFragment.newInstance());
+    fragmentTransaction.commit();
   }
 
-  @Override
-  public void enableFormElements() {
-    emailField.setEnabled(true);
-    passwordField.setEnabled(true);
-    loginButton.setEnabled(true);
-    registrationButton.setEnabled(true);
+  private void displayLoginView() {
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    fragmentTransaction.replace(android.R.id.content, LoginFragment.newInstance());
+    fragmentTransaction.commit();
   }
 
-  @Override
-  public void disableFormElements() {
-    emailField.setEnabled(false);
-    passwordField.setEnabled(false);
-    loginButton.setEnabled(false);
-    registrationButton.setEnabled(false);
+  private void displayRegistrationView() {
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    fragmentTransaction.replace(android.R.id.content, RegistrationFragment.newInstance());
+    fragmentTransaction.addToBackStack(null);
+    fragmentTransaction.commit();
   }
-
-  @Override
-  public void showFailureMessage() {
-    Toast.makeText(this, R.string.login_failure_message, Toast.LENGTH_SHORT).show();
-  }
-
-  @Override
-  public void close() {
-    finish();
-  }
-
-  ///////////////////////////////////////////////////////////////////////////
-  // Private functionality
-  ///////////////////////////////////////////////////////////////////////////
-
-  private void bindViews() {
-    emailField = (EditText) findViewById(R.id.email_field);
-    passwordField = (EditText) findViewById(R.id.password_field);
-    progressIndicator = (ProgressBar) findViewById(R.id.progress_indicator);
-    loginButton = (Button) findViewById(R.id.login_button);
-    registrationButton = (Button) findViewById(R.id.registration_button);
-  }
-
-  private void setupLoginButton() {
-    loginButton.setOnClickListener(view -> {
-      String email = emailField.getText().toString();
-      String password = passwordField.getText().toString();
-      presenter.onLoginAction(email, password);
-    });
-  }
-
-  private void setupRegistrationButton() {
-    registrationButton.setOnClickListener(view -> {
-      presenter.onNavigateToRegistrationScreen();
-    });
-  }
-
-  private void createPresenter() {
-    AuthenticationUseCase authenticationUseCase = DependencyProvider.provideAuthenticationUseCase();
-    ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
-    presenter = new LoginPresenter(authenticationUseCase, screenNavigator);
-  }
-
 }

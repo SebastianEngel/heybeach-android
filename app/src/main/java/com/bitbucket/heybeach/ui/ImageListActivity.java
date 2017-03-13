@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import com.bitbucket.heybeach.DependencyProvider;
 import com.bitbucket.heybeach.R;
-import com.bitbucket.heybeach.domain.AccountManager;
 import com.bitbucket.heybeach.domain.Image;
 import com.bitbucket.heybeach.domain.ListImagesUseCase;
 import java.util.List;
@@ -75,9 +74,8 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
 
   private void createPresenter() {
     ListImagesUseCase listImagesUseCase = DependencyProvider.provideListImagesUseCase();
-    AccountManager accountManager = DependencyProvider.provideAccountManagerSingleton();
     ScreenNavigator screenNavigator = DependencyProvider.provideScreenNavigator(this);
-    presenter = new ImageListPresenter(listImagesUseCase, accountManager, screenNavigator);
+    presenter = new ImageListPresenter(listImagesUseCase, screenNavigator);
   }
 
 }
