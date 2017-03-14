@@ -5,9 +5,8 @@
 
   <item
       android:id="@+id/account"
-      android:icon="@drawable/ic_account_circle_black_24dp"
+      android:icon="@drawable/ic_account_circle_white_24dp"
       android:title="@string/beaches_list_menu_account"
-      android:visible="true"
       app:showAsAction="ifRoom"/>
 
 </menu>
