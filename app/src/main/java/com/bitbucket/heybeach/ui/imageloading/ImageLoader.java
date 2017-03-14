@@ -13,7 +13,7 @@ public class ImageLoader {
 
   private static final String LOG_TAG = ImageLoader.class.getName();
 
-  private final ExecutorService executorService = Executors.newFixedThreadPool(5);
+  private final ExecutorService executorService = Executors.newCachedThreadPool();
   private final Map<ImageView, ImageDownload> viewToDownloads = new WeakHashMap<>();
 
   private static ImageLoader instance;
