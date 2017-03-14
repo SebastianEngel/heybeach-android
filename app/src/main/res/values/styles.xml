@@ -1,0 +1,35 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="Widget.HeyBeach.Toolbar" parent="Widget.AppCompat.Toolbar">
+    <item name="android:background">?attr/colorPrimary</item>
+    <item name="android:elevation">@dimen/toolbar_elevation</item>
+    <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+    <item name="android:popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    <item name="titleTextColor">@android:color/white</item>
+  </style>
+
+  <style name="AccountActivityDialogTheme" parent="Theme.AppCompat.Light.NoActionBar"/>
+
+  <!-- Base dialog activity theme -->
+  <style name="AppTheme.DialogWhenLarge" parent="Theme.AppCompat.Light.DialogWhenLarge">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="buttonStyle">@style/ButtonStyle</item>
+  </style>
+
+  <!-- Buttons -->
+  <style name="ButtonStyle" parent="Widget.AppCompat.Button.Colored">
+      <item name="colorButtonNormal">@color/colorAccent</item>
+  </style>
+
+</resources>

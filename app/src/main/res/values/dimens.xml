@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <dimen name="content_padding_default">16dp</dimen>
+
+  <dimen name="element_spacing_default">8dp</dimen>
+  <dimen name="element_spacing_double">16dp</dimen>
+
+  <dimen name="toolbar_elevation">4dp</dimen>
+
+  <dimen name="list_item_image_width">100dp</dimen>
+  <dimen name="list_item_image_height">150dp</dimen>
+
+</resources>
