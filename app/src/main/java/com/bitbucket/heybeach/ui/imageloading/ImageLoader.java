@@ -32,7 +32,6 @@ public class ImageLoader {
     ImageDownload imageDownload = viewToDownloads.remove(imageView);
     if (imageDownload != null) {
       imageDownload.cancel();
-      callback.onDownloadCanceled();
     }
 
     try {
@@ -48,7 +47,6 @@ public class ImageLoader {
   public interface Callback {
     void onDownloadCompleted(Bitmap bitmap);
     void onDownloadFailed();
-    void onDownloadCanceled();
   }
 
 }

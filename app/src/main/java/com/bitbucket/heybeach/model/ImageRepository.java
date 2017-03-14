@@ -15,9 +15,9 @@ public class ImageRepository {
     this.apiClient = apiClient;
   }
 
-  public List<Image> getImages() throws RepositoryException {
+  public List<Image> getImagesForPage(int page) throws RepositoryException {
     try {
-      List<ImageJson> imageJsonList = apiClient.getImages();
+      List<ImageJson> imageJsonList = apiClient.getImagesForPage(page);
       List<Image> images = new ArrayList<>(imageJsonList.size());
 
       for (ImageJson imageJson : imageJsonList) {

@@ -23,11 +23,11 @@ public class BeachesApiClient {
     this.imageListJsonReader = new ImageListJsonReader();
   }
 
-  public List<ImageJson> getImages() throws ApiClientException {
+  public List<ImageJson> getImagesForPage(int page) throws ApiClientException {
     HttpURLConnection urlConnection = null;
 
     try {
-      urlConnection = (HttpURLConnection) createImagesUrl().openConnection();
+      urlConnection = (HttpURLConnection) createImagesUrl(page).openConnection();
       urlConnection.setRequestMethod("GET");
       urlConnection.setRequestProperty("Cache-Control", "no-cache");
       urlConnection.setConnectTimeout(timeoutMs);
@@ -52,13 +52,13 @@ public class BeachesApiClient {
     }
   }
 
-  private URL createImagesUrl() throws MalformedURLException {
+  private URL createImagesUrl(int page) throws MalformedURLException {
     String imagesUrl = baseUrl;
 
     if (!imagesUrl.endsWith("/")) {
       imagesUrl = imagesUrl.concat("/");
     }
-    return new URL(imagesUrl.concat(BEACHES_ENDPOINT));
+    return new URL(imagesUrl.concat(BEACHES_ENDPOINT + "?page=" + page));
   }
 
 }

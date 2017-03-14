@@ -15,6 +15,7 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
 
   private ImageListPresenter presenter;
   private ImageListAdapter listAdapter;
+  private boolean currentlyLoadingPage;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,9 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
   }
 
   @Override
-  public void updateImages(List<Image> images) {
-    listAdapter.updateItems(images);
+  public void addImages(List<Image> images) {
+    listAdapter.addItems(images);
+    currentlyLoadingPage = false;
   }
 
   private void setupToolbar() {
@@ -66,6 +68,20 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     imageList.setLayoutManager(layoutManager);
+    imageList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+      private int threshold = 2;
+
+      @Override
+      public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+
+        if (!currentlyLoadingPage && (lastVisibleItemPosition + threshold > layoutManager.getItemCount())) {
+          currentlyLoadingPage = true;
+          presenter.onNextPageRequested();
+        }
+      }
+    });
   }
 
   private void createPresenter() {

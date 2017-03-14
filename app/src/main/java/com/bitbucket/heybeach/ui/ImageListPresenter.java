@@ -12,6 +12,7 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
 
   private final ListImagesUseCase listImagesUseCase;
   private final ScreenNavigator screenNavigator;
+  private int currentPage;
 
   ImageListPresenter(ListImagesUseCase listImagesUseCase, ScreenNavigator screenNavigator) {
     this.listImagesUseCase = listImagesUseCase;
@@ -21,17 +22,19 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
   @Override
   public void onAttach(ImageListView view) {
     super.onAttach(view);
-    loadImages();
+    onNextPageRequested();
   }
 
   void onNavigateToAccount() {
     screenNavigator.navigateToAccountScreen();
   }
 
-  private void loadImages() {
+
+  void onNextPageRequested() {
     try {
-      List<Image> images = listImagesUseCase.getImages();
-      view.updateImages(images);
+      List<Image> images = listImagesUseCase.getImagesForPage(currentPage + 1);
+      view.addImages(images);
+      currentPage++;
     } catch (UseCaseException e) {
       Log.e(LOG_TAG, "Failed to load images.", e);
     }
@@ -42,7 +45,7 @@ class ImageListPresenter extends MvpPresenter<ImageListPresenter.ImageListView> 
   ///////////////////////////////////////////////////////////////////////////
 
   interface ImageListView extends MvpView {
-    void updateImages(List<Image> images);
+    void addImages(List<Image> images);
   }
 
 }

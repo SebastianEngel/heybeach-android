@@ -22,8 +22,7 @@ class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder>
 
   private final List<Image> items = new ArrayList<>();
 
-  void updateItems(List<Image> images) {
-    items.clear();
+  void addItems(List<Image> images) {
     items.addAll(images);
     notifyDataSetChanged();
   }
@@ -76,11 +75,6 @@ class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder>
           imageView.setScaleType(ScaleType.CENTER);
           imageView.setImageDrawable(ResourcesCompat.getDrawable(imageView.getContext().getResources(), R.drawable.ic_mood_bad_24dp,
               imageView.getContext().getTheme()));
-        }
-
-        @Override
-        public void onDownloadCanceled() {
-          progressIndicator.setVisibility(View.GONE);
         }
       });
     }

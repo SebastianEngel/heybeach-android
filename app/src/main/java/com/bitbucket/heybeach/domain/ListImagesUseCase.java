@@ -14,9 +14,9 @@ public class ListImagesUseCase {
     this.executorService = executorService;
   }
 
-  public List<Image> getImages() throws UseCaseException {
+  public List<Image> getImagesForPage(int page) throws UseCaseException {
     try {
-      return executorService.submit(imageRepository::getImages).get();
+      return executorService.submit(() -> imageRepository.getImagesForPage(page)).get();
     } catch (Exception e) {
       throw new UseCaseException("Failed to load images from repository.", e);
     }
