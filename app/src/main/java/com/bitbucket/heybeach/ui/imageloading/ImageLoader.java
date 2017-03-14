@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.widget.ImageView;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -30,10 +31,14 @@ public class ImageLoader {
   }
 
   public void load(String imageUrl, ImageView imageView, Callback callback) {
+    WeakReference<Callback> callbackRef = new WeakReference<>(callback);
+
     Bitmap bitmap = imageCache.get(imageUrl);
     if (bitmap != null) {
       Log.d(LOG_TAG, "Taking image from cache for URL =  " + imageUrl);
-      callback.onDownloadCompleted(bitmap);
+      if (callbackRef.get() != null) {
+        callbackRef.get().onDownloadCompleted(bitmap);
+      }
     } else {
 
       // If there is already an image download for this ImageView, remove it.
@@ -48,11 +53,16 @@ public class ImageLoader {
             synchronized (imageCache) {
               imageCache.put(imageUrl, bitmap);
             }
-            callback.onDownloadCompleted(bitmap);
+            if (callbackRef.get() != null) {
+              callbackRef.get().onDownloadCompleted(bitmap);
+            }
           }
 
-          @Override public void onDownloadFailed() {
-            callback.onDownloadFailed();
+          @Override
+          public void onDownloadFailed() {
+            if (callbackRef.get() != null) {
+              callbackRef.get().onDownloadFailed();
+            }
           }
         });
         viewToDownloads.put(imageView, imageDownload);
