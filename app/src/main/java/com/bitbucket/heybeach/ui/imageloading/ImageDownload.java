@@ -2,10 +2,11 @@ package com.bitbucket.heybeach.ui.imageloading;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.widget.ImageView;
+import com.bitbucket.heybeach.ui.imageloading.ImageLoader.Callback;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,12 +19,13 @@ class ImageDownload implements Runnable {
   private static final int READ_TIMEOUT_MS = 15000;
 
   private final URL imageUrl;
-  private final WeakReference<ImageView> imageView;
+  private final Handler mainHandler = new Handler(Looper.getMainLooper());
+  private Callback callback;
   private boolean canceled;
 
-  ImageDownload(String url, ImageView imageView) throws MalformedURLException {
+  ImageDownload(String url, Callback callback) throws MalformedURLException {
     this.imageUrl = new URL(url);
-    this.imageView = new WeakReference<>(imageView);
+    this.callback = callback;
   }
 
   void cancel() {
@@ -47,16 +49,20 @@ class ImageDownload implements Runnable {
         Log.d(LOG_TAG, "Response " + responseCode + ". Downloading image...");
 
         Bitmap bitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
-
-        ImageView imageView = this.imageView.get();
-        if (!canceled && imageView != null) {
-          imageView.getHandler().post(() -> imageView.setImageBitmap(bitmap));
+        if (!canceled && callback != null) {
+          mainHandler.post(() -> callback.onDownloadCompleted(bitmap));
         }
       } else {
         Log.e(LOG_TAG, "Failed to load image. API returned response code != 200. Response code was " + responseCode);
+        if (callback != null) {
+          mainHandler.post(callback::onDownloadFailed);
+        }
       }
     } catch (IOException e) {
       Log.e(LOG_TAG, "Failed to load image. " + this, e);
+      if (callback != null) {
+        mainHandler.post(callback::onDownloadFailed);
+      }
     } finally {
       if (urlConnection != null) {
         urlConnection.disconnect();
@@ -66,7 +72,7 @@ class ImageDownload implements Runnable {
 
   @Override
   public String toString() {
-    return "ImageDownload{" + "imageUrl=" + imageUrl + ", imageView=" + imageView.get() + '}';
+    return "ImageDownload{" + "imageUrl=" + imageUrl + ", callback=" + callback + ", canceled=" + canceled + '}';
   }
 
 }

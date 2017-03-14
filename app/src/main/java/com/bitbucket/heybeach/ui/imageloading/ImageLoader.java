@@ -1,5 +1,6 @@
 package com.bitbucket.heybeach.ui.imageloading;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.ImageView;
 import java.net.MalformedURLException;
@@ -26,20 +27,28 @@ public class ImageLoader {
     return instance;
   }
 
-  public void load(String imageUrl, ImageView imageView) {
+  public void load(String imageUrl, ImageView imageView, Callback callback) {
     // If there is already an image download for this ImageView, remove it.
     ImageDownload imageDownload = viewToDownloads.remove(imageView);
     if (imageDownload != null) {
       imageDownload.cancel();
+      callback.onDownloadCanceled();
     }
 
     try {
-      imageDownload = new ImageDownload(imageUrl, imageView);
+      imageDownload = new ImageDownload(imageUrl, callback);
       viewToDownloads.put(imageView, imageDownload);
       executorService.submit(imageDownload);
     } catch (MalformedURLException e) {
       Log.w(LOG_TAG, "Unable to download image due to invalid image url.", e);
     }
+  }
+
+
+  public interface Callback {
+    void onDownloadCompleted(Bitmap bitmap);
+    void onDownloadFailed();
+    void onDownloadCanceled();
   }
 
 }
