@@ -46,12 +46,12 @@ class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.ViewHolder>
     ViewHolder(View itemView) {
       super(itemView);
       imageView = (ImageView) itemView.findViewById(R.id.image);
-      nameView = (TextView) itemView.findViewById(R.id.name);
+      nameView = (TextView) itemView.findViewById(R.id.title_value);
     }
 
     void bind(Image image) {
-      imageView.setMinimumWidth(image.getWidth());
-      imageView.setMinimumHeight(image.getHeight());
+      //imageView.setMinimumWidth(image.getWidth());
+      //imageView.setMinimumHeight(image.getHeight());
       nameView.setText(image.getName());
       ImageLoader.getInstance().load(BuildConfig.API_BASE_URL + "/" + image.getRelativeUrl(), imageView);
     }

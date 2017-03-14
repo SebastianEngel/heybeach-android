@@ -2,7 +2,6 @@ package com.bitbucket.heybeach.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -67,9 +66,6 @@ public class ImageListActivity extends AppCompatActivity implements ImageListPre
     LinearLayoutManager layoutManager = new LinearLayoutManager(this);
     layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     imageList.setLayoutManager(layoutManager);
-
-    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
-    imageList.addItemDecoration(dividerItemDecoration);
   }
 
   private void createPresenter() {
