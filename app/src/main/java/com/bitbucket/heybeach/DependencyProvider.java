@@ -8,18 +8,11 @@ import com.bitbucket.heybeach.model.ImageRepository;
 import com.bitbucket.heybeach.model.api.beaches.BeachesApiClient;
 import com.bitbucket.heybeach.model.api.users.UsersApiClient;
 import com.bitbucket.heybeach.ui.ScreenNavigator;
-import com.bitbucket.heybeach.ui.imageloading.ImageLoader;
 import java.util.concurrent.Executors;
 
 public final class DependencyProvider {
 
-  private static ImageLoader imageLoader;
-
   private DependencyProvider() {}
-
-  public static ImageLoader provideImageLoader() {
-    return ImageLoader.getInstance();
-  }
 
   // Use cases
 
