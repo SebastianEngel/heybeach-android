@@ -49,6 +49,10 @@ A lot could be improved with the right time. For example:
 - improving design and making layouts event more responsive.
 - adding progress indicators where ever long running tasks are executed
 
+(screenshot-phone.png)
+
+(screenshot-tablet.png)
+
 <br/>
 
 <hr/>
