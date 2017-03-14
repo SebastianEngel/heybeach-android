@@ -49,9 +49,11 @@ A lot could be improved with the right time. For example:
 - improving design and making layouts event more responsive.
 - adding progress indicators where ever long running tasks are executed
 
-![Screenshot Phone] (screenshot-phone.png)
+## 3. Screenshots
 
-![Screenshot Tablet] (screenshot-tablet.png)
+![Screenshot Phone](screenshot-phone.png)
+
+![Screenshot Tablet](screenshot-tablet.png)
 
 <br/>
 
